@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Donation.Api/Donation.Api.csproj" />
+  <Project Path="Donation.Application/Donation.Application.csproj" />
+  <Project Path="Donation.Domain/Donation.Domain.csproj" />
+  <Project Path="Donation.Infrastructure/Donation.Infrastructure.csproj" />
+</Solution>
