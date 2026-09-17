@@ -12,7 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Donation.Infrastructure\Donation.Infrastructure.csproj" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Middlewares\" />
+    <Folder Include="Extentions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Donation.Application\Donation.Application.csproj" />
   </ItemGroup>
 
 </Project>

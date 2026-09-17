@@ -5,12 +5,20 @@
   </ItemGroup>
 
   <ItemGroup>
+<<<<<<< Updated upstream
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.12">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+=======
+    <Folder Include="Persistence\Context\" />
+    <Folder Include="Persistence\Configurations\" />
+    <Folder Include="Persistence\Unitofwork\" />
+    <Folder Include="Persistence\Repositories\" />
+    <Folder Include="Services\" />
+>>>>>>> Stashed changes
   </ItemGroup>
 
   <PropertyGroup>
