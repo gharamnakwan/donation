@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Donation.Application.Abstractions.Services;
+﻿using Donation.Application.Abstractions.Services;
 using Donation.Application.DTOs.Request;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Donation.Api.Controllers;
@@ -20,6 +21,15 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var result = await _authService.RegisterAsync(request);
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout([FromBody] LogoutRequest request)
+    {
+        var result = await _authService.LogoutAsync(request);
+
         return Ok(result);
     }
 }

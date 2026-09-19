@@ -4,8 +4,9 @@ using Donation.Application.DTOs.Response;
 using Donation.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-
 namespace Donation.Application.Services;
+
+
 
 public sealed class AuthService : IAuthService
 {
@@ -54,5 +55,37 @@ public sealed class AuthService : IAuthService
             RefreshToken = "temp-refresh",
             RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7)
         };
+    }
+    public async Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request)
+    {
+        _logger.LogInformation("Refresh token attempt started.");
+
+        // 1. استخراج الـ Claims من الـ Access Token انتهى الصلاحية
+         //var principal = _jwtProvider.GetPrincipalFromExpiredToken(request.AccessToken);
+        // if (principal is null)
+        // {
+        //     throw new Exception("Invalid access token.");
+        // }
+
+        // 2. منطق التحقق وإنشاء التوكين الجديد
+        return await Task.FromResult(new AuthResponse
+        {
+            AccessToken = "new-access-token",
+            AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(15),
+            RefreshToken = "new-refresh-token",
+            RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7)
+        });
+    }
+
+    public async Task<AuthResponse> LogoutAsync(LogoutRequest request)
+    {
+        _logger.LogInformation("Logout attempt started.");
+
+        // منطق إبطال التوكين أو معالجته
+        return await Task.FromResult(new AuthResponse
+        {
+            AccessToken = string.Empty,
+            RefreshToken = string.Empty
+        });
     }
 }

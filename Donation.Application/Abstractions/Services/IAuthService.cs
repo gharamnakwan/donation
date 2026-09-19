@@ -6,5 +6,7 @@ namespace Donation.Application.Abstractions.Services;
 public interface IAuthService
 {
     Task<AuthResponse> RegisterAsync(RegisterRequest request);
-    //Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request);
+    Task<AuthResponse>LogoutAsync(LogoutRequest request);
+
+    Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request);
 }
