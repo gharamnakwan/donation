@@ -1,8 +1,10 @@
 using Donation.Application.Abstractions.Services;
 using Donation.Application.Services;
 using Donation.Domain.Entities;
+using Donation.Infrastructure;
 using Donation.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -21,11 +23,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. تسجيل الـ Identity Core وربطه مع الـ ApplicationDbContext
+// 2. تسجيل الـ Identity Core مع دعم الأدوار (Roles) وربطه مع الـ ApplicationDbContext
 builder.Services.AddIdentityCore<ApplicationUser>()
+    .AddRoles<IdentityRole>() // <-- تم إضافة هذا السطر لحل مشكلة الـ Role Store
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// 3. إضافة وتكوين إعدادات الـ JWT Authentication & Authorization (هذا الجزء الأساسي الناقص)
+// 3. إضافة وتكوين إعدادات الـ JWT Authentication & Authorization
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -42,11 +45,13 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecretKey1234567890123456"))
     };
 });
-
 builder.Services.AddAuthorization();
 
 // 4. Register Auth Service
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+// 5. Register Infrastructure Services (لتسجيل الـ UserService وباقي خدمات الطبقة تلقائياً)
+builder.Services.AddInfrastructureServices();
 
 var app = builder.Build();
 

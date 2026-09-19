@@ -4,9 +4,8 @@ using Donation.Application.DTOs.Response;
 using Donation.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+
 namespace Donation.Application.Services;
-
-
 
 public sealed class AuthService : IAuthService
 {
@@ -21,53 +20,10 @@ public sealed class AuthService : IAuthService
         _userManager = userManager;
     }
 
-    public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
-    {
-        _logger.LogInformation("Registration attempt started for email: {Email}", request.Email);
-
-        var existingUserByEmail = await _userManager.FindByEmailAsync(request.Email);
-        if (existingUserByEmail is not null)
-        {
-            throw new Exception("Email is already in use.");
-        }
-
-        var user = new ApplicationUser
-        {
-            FullName = request.FullName,
-            UserName = request.Username,
-            Email = request.Email,
-            PhoneNumber = request.PhoneNumber,
-            IsActive = true,
-            EmailConfirmed = true
-        };
-
-        var createResult = await _userManager.CreateAsync(user, request.Password);
-        if (!createResult.Succeeded)
-        {
-            var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
-            throw new Exception(errors);
-        }
-
-        return new AuthResponse
-        {
-            AccessToken = "temp-token",
-            AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(15),
-            RefreshToken = "temp-refresh",
-            RefreshTokenExpiresAt = DateTime.UtcNow.AddDays(7)
-        };
-    }
     public async Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request)
     {
         _logger.LogInformation("Refresh token attempt started.");
 
-        // 1. استخراج الـ Claims من الـ Access Token انتهى الصلاحية
-         //var principal = _jwtProvider.GetPrincipalFromExpiredToken(request.AccessToken);
-        // if (principal is null)
-        // {
-        //     throw new Exception("Invalid access token.");
-        // }
-
-        // 2. منطق التحقق وإنشاء التوكين الجديد
         return await Task.FromResult(new AuthResponse
         {
             AccessToken = "new-access-token",
@@ -81,7 +37,6 @@ public sealed class AuthService : IAuthService
     {
         _logger.LogInformation("Logout attempt started.");
 
-        // منطق إبطال التوكين أو معالجته
         return await Task.FromResult(new AuthResponse
         {
             AccessToken = string.Empty,

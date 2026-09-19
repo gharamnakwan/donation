@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Donation.Application.Abstractions.Services;
+using Donation.Infrastructure.Services;
 
-namespace Donation.Infrastructure
+namespace Donation.Infrastructure;
+
+public static class DependencyInjection
 {
-    internal class DependencyInjection
-    {
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+    { 
+        services.AddScoped<IUserService, UserService>();
+
+        return services;
     }
 }
